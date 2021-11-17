@@ -1,4 +1,5 @@
 import {MySQLClient} from './lib/MySQLClient';
+import cors from 'cors';
 import databaseConfig from './config/database.json';
 import express from 'express';
 import path from 'path';
@@ -8,13 +9,14 @@ function main() {
     const app = express();
     const port = 8080;
 
+    app.use(cors({origin: true}));
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'ejs');
 
     function isAreaValid(params: Record<string, unknown>): boolean {
         try {
             // @ts-ignore
-            return parseInt(params.areaId) in [1, 2, 3, 4, 5, 6];
+            return [1, 2, 3, 4, 5, 6].includes(parseInt(params.areaId));
         } catch (_) {
             return false
         }
@@ -53,6 +55,15 @@ function main() {
     app.get('/v1/last-update', async (_, res) => {
             try {
                 res.status(200).send(await mySQLClient.getLastUpdate());
+            } catch (e) {
+                console.error(e);
+                res.sendStatus(500);
+            }
+    });
+
+    app.get('/v1/data-points', async (_, res) => {
+            try {
+                res.status(200).send(await mySQLClient.getTotalDataPoints());
             } catch (e) {
                 console.error(e);
                 res.sendStatus(500);

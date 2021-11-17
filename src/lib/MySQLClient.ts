@@ -21,10 +21,12 @@ export class MySQLClient {
         });
     }
 
+    // Emissions
+
     async getEmissions(areaId: string): Promise<EmissionData[]> {
         const connection = await this.connectToDatabase();
         const results = (await connection.query(
-            'SELECT * FROM no2_emissions WHERE area_id=? ORDER BY timestamp LIMIT 192',
+            'SELECT * FROM no2_emissions WHERE area_id=? ORDER BY timestamp DESC',
             areaId)
         )[0];
         await connection.end();
@@ -32,16 +34,20 @@ export class MySQLClient {
         return <EmissionData[]> results;
     }
 
+    // Traffic
+
     async getTraffic(areaId: string): Promise<TrafficData[]> {
         const connection = await this.connectToDatabase();
         const results = (await connection.query(
-            'SELECT * FROM traffic WHERE area_id=? ORDER BY timestamp LIMIT 576',
+            'SELECT * FROM traffic WHERE area_id=? ORDER BY timestamp DESC',
             areaId)
         )[0];
         await connection.end();
 
         return <TrafficData[]> results;
     }
+
+    // Misc
 
     async getLastUpdate(): Promise<string> {
         const connection = await this.connectToDatabase();
@@ -50,5 +56,15 @@ export class MySQLClient {
 
         // @ts-ignore
         return <string> result[0]['MAX(timestamp)'];
+    }
+
+    async getTotalDataPoints(): Promise<string> {
+        const connection = await this.connectToDatabase();
+        const result1 = (await connection.query('SELECT COUNT(*) FROM traffic'))[0];
+        const result2 = (await connection.query('SELECT COUNT(*) FROM no2_emissions'))[0];
+        await connection.end();
+
+        // @ts-ignore
+        return (parseInt(result1[0]['COUNT(*)']) + parseInt(result2[0]['COUNT(*)'])).toString();
     }
 }
