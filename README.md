@@ -1,5 +1,5 @@
-[![License](https://img.shields.io/github/license/msolefonte/dublin-pollution-api)](https://github.com/msolefonte/dublin-pollution-api/blob/master/LICENSE)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/msolefonte/dublin-pollution-api/blob/master/CONTRIBUTING.md)
+[![License](https://img.shields.io/github/license/msolefonte/dublin-pollution-api)](https://github.com/msolefonte/dublin-pollution-api/blob/main/LICENSE)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/msolefonte/dublin-pollution-api/CONTRIBUTING.md)
 
 # Dublin NO<sub>2</sub> Pollution API
 
